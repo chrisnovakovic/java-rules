@@ -545,9 +545,15 @@ def _java_toolchain(name : str, jdk_url : str|dict='', jdk:str='', visibility:li
         java_platform = "win32"
 
     include_root = join_path(subrepo_name(), package_name(), name, "include")
-    labels = ["cc:inc:" + include_root]
+    labels = [
+        "cc:inc:" + include_root,
+        "cc:pcc:-iquote " + include_root,
+    ]
     if java_platform:
-        labels += ["cc:inc:" + join_path(include_root, java_platform)]
+        labels += [
+            "cc:inc:" + join_path(include_root, java_platform),
+            "cc:pcc:-iquote " + join_path(include_root, java_platform),
+        ]
 
     return build_rule(
         name = name,
